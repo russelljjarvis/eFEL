@@ -175,17 +175,17 @@ toolbox.register("evaluate", evaluate)
 toolbox.register("mate", deap.tools.cxSimulatedBinaryBounded, eta=ETA, low=LOWER, up=UPPER)
 toolbox.register("mutate", deap.tools.mutPolynomialBounded, eta=ETA, low=LOWER, up=UPPER, indpb=0.1)
 toolbox.register("variate", deap.algorithms.varAnd)
-toolbox.register("select", plot_selector, selector=tools.selIBEA)
+toolbox.register("select", plot_selector, selector=tools.selTournament)
 toolbox.register("map", futures.map)
 # toolbox.register("select", tools.selIBEA)
 # toolbox.register("select", tools.selIBEA)
 
 def main():
     pop = toolbox.population(n=MU)
-    pop, logbook = algorithms.eaAlphaMuPlusLambda(pop, toolbox, MU,
+    pop, logbook = algorithms.eaMuCommaLambda(pop, toolbox, MU,
                                                   None, CXPB, 1 - CXPB,
-                                                  NGEN, verbose=False)
+                                                  NGEN, verbose=True)
     return pop, logbook
 
 if __name__ == '__main__':
-    print main()
+    print(main())
