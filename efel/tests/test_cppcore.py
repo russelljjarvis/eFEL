@@ -83,17 +83,21 @@ class TestCppcore(object):
         efel.cppcore.setFeatureDouble('burst_factor', [1.5])
         efel.cppcore.setFeatureDouble("initial_perc", [0.1])
 
+        efel.cppcore.setFeatureInt("DerivativeWindow", [3])
+
     def test_getFeatureNames(self):  # pylint: disable=R0201
         """cppcore: Testing getting all feature names"""
         import efel.cppcore
         feature_names = []
         efel.cppcore.getFeatureNames(feature_names)
 
+        feature_names += efel.pyfeatures.all_pyfeatures
+
         import json
         test_data_path = os.path.join(testdata_dir, '../featurenames.json')
         with open(test_data_path, 'r') as featurenames_json:
             expected_featurenames = json.load(featurenames_json)
-        nt.assert_equal(feature_names, expected_featurenames)
+        nt.assert_equal(set(feature_names), set(expected_featurenames))
 
     def test_getFeatureDouble_failure(self):  # pylint: disable=R0201
         """cppcore: Testing failure exit code in getFeatureDouble"""

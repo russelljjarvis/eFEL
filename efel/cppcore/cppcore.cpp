@@ -112,7 +112,7 @@ static void PyList_from_vectorstring(vector<string> input, PyObject* output) {
   }
 }
 
-static PyObject* 
+static PyObject*
 _getfeature(PyObject* self, PyObject* args, const string &type) {
   char* feature_name;
   PyObject* py_values;
@@ -145,6 +145,32 @@ _getfeature(PyObject* self, PyObject* args, const string &type) {
   return Py_BuildValue("i", return_value);
 }
 
+
+static PyObject*
+_getmapdata(PyObject* self, PyObject* args, const string &type) {
+  char* data_name;
+  PyObject* py_values = PyList_New(0);
+
+  if (!PyArg_ParseTuple(args, "s", &data_name)) {
+    return NULL;
+  }
+
+  if (type == "int") {
+    vector<int> return_values;
+    return_values = pFeature->getmapIntData(string(data_name));
+    PyList_from_vectorint(return_values, py_values);
+  } else if (type == "double") {
+    vector<double> return_values;
+    return_values = pFeature->getmapDoubleData(string(data_name));
+    PyList_from_vectordouble(return_values, py_values);
+  } else {
+    PyErr_SetString(PyExc_TypeError, "Unknown data name");
+    return NULL;
+  }
+
+  return py_values;
+}
+
 static PyObject* getfeature(PyObject* self, PyObject* args) {
   const string empty("");
   return _getfeature(self, args, empty);
@@ -169,6 +195,14 @@ static PyObject* getfeatureint(PyObject* self, PyObject* args) {
   const string type("int");
   return _getfeature(self, args, type);
 }
+static PyObject* getmapintdata(PyObject* self, PyObject* args) {
+  const string type("int");
+  return _getmapdata(self, args, type);
+}
+static PyObject* getmapdoubledata(PyObject* self, PyObject* args) {
+  const string type("double");
+  return _getmapdata(self, args, type);
+}
 
 static PyObject* setfeaturedouble(PyObject* self, PyObject* args) {
   char* feature_name;
@@ -190,6 +224,21 @@ static PyObject* getfeaturedouble(PyObject* self, PyObject* args) {
   return _getfeature(self, args, type);
 }
 
+static PyObject* setfeaturestring(PyObject* self, PyObject* args){
+  char* feature_name;
+  char* py_value;
+
+  int return_value;
+  if (!PyArg_ParseTuple(args, "ss", &feature_name, &py_value)) {
+    return NULL;
+  }
+
+  return_value = pFeature->setFeatureString(string(feature_name), py_value);
+
+  return Py_BuildValue("i", return_value);
+
+}
+
 static PyObject* getFeatureNames(PyObject* self, PyObject* args) {
   vector<string> feature_names;
   PyObject* py_feature_names;
@@ -203,22 +252,25 @@ static PyObject* getFeatureNames(PyObject* self, PyObject* args) {
   return Py_BuildValue("");
 }
 
-static PyObject* getDistance_wrapper(PyObject* self, 
-        PyObject* args, PyObject* kwds) {
+static PyObject* getDistance_wrapper(PyObject* self,
+                                     PyObject* args,
+                                     PyObject* kwds) {
   char* feature_name;
-  double mean, std, distance;
+  double mean, std, distance, error_dist=250;
   int trace_check = 1;
 
-  static char *kwlist[] = {"feature_name", "mean", "std", "trace_check", NULL};
+  const char *kwlist[] = {"feature_name", "mean", "std", "trace_check", 
+      "error_dist", NULL};
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwds, "sdd|i", kwlist, 
-              &feature_name, &mean, &std, 
-              &trace_check)) {
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "sdd|id",
+                                   const_cast<char**>(kwlist),
+                                   &feature_name, &mean, &std,
+                                   &trace_check, &error_dist)) {
     return NULL;
   }
 
-  distance = pFeature->getDistance(feature_name, mean, std, 
-          trace_check);
+  distance = pFeature->getDistance(feature_name, mean, std,
+                                   trace_check, error_dist);
 
   return Py_BuildValue("d", distance);
 }
@@ -250,11 +302,17 @@ static PyMethodDef CppCoreMethods[] = {
       "Get a integer feature."},
     {"getFeatureDouble", getfeaturedouble, METH_VARARGS,
       "Get a double feature."},
+    {"getMapIntData", getmapintdata, METH_VARARGS,
+      "Get a int data."},
+    {"getMapDoubleData", getmapdoubledata, METH_VARARGS,
+      "Get a double data."},
 
     {"setFeatureInt", setfeatureint, METH_VARARGS,
       "Set a integer feature."},
     {"setFeatureDouble", setfeaturedouble, METH_VARARGS,
       "Set a double feature."},
+    {"setFeatureString", setfeaturestring, METH_VARARGS,
+      "Set a string feature."},
 
     {"featuretype", featuretype, METH_VARARGS,
       "Get the type of a feature"},

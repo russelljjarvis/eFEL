@@ -202,6 +202,7 @@ int FillFptrTable() {
   FptrTableV5["AP2_AP1_diff"] = &LibV5::AP2_AP1_diff;
   FptrTableV5["AP2_AP1_peak_diff"] = &LibV5::AP2_AP1_peak_diff;
   FptrTableV5["AP2_width"] = &LibV5::AP2_width;
+  FptrTableV5["APlast_width"] = &LibV5::APlast_width;
   FptrTableV5["AHP_depth_from_peak"] = &LibV5::AHP_depth_from_peak;
   FptrTableV5["AHP_time_from_peak"] = &LibV5::AHP_time_from_peak;
   FptrTableV5["AHP1_depth_from_peak"] = &LibV5::AHP1_depth_from_peak;
@@ -242,9 +243,12 @@ int FillFptrTable() {
   FptrTableV5["min_voltage_between_spikes"] =
       &LibV5::min_voltage_between_spikes;
   FptrTableV5["voltage"] = &LibV5::voltage;
+  FptrTableV5["current"] = &LibV5::current;
+  FptrTableV5["time"] = &LibV5::time;
   FptrTableV5["steady_state_voltage_stimend"] =
       &LibV5::steady_state_voltage_stimend;
   FptrTableV5["voltage_base"] = &LibV5::voltage_base;
+  FptrTableV5["current_base"] = &LibV5::current_base;
   FptrTableV5["decay_time_constant_after_stim"] =
       &LibV5::decay_time_constant_after_stim;
 
@@ -255,6 +259,11 @@ int FillFptrTable() {
   FptrTableV5["maximum_voltage_from_voltagebase"] =
       &LibV5::maximum_voltage_from_voltagebase;
   FptrTableV5["Spikecount_stimint"] = &LibV5::Spikecount_stimint;
+  
+  FptrTableV5["peak_indices"] = &LibV5::peak_indices;
+  FptrTableV5["sag_amplitude"] = &LibV5::sag_amplitude;
+  FptrTableV5["sag_ratio1"] = &LibV5::sag_ratio1;
+  FptrTableV5["sag_ratio2"] = &LibV5::sag_ratio2;
   
   //****************** end of FptrTableV5 *****************************
 

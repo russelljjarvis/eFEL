@@ -19,9 +19,24 @@
 #ifndef __UTILS
 #define __UTILS
 
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <algorithm>
+#include <numeric>
 #include <vector>
+#include <utility>
 
 using std::vector;
+
+struct linear_fit_result
+{
+  double slope;
+  // average residual sum squares
+  double average_rss;
+  // coefficient of determination R^2
+  double r_square;
+};
 
 int LinearInterpolation(double dt, const vector<double>& X,
                         const vector<double>& Y, vector<double>& InterpX,
@@ -29,9 +44,17 @@ int LinearInterpolation(double dt, const vector<double>& X,
 int getCentralDifferenceDerivative(double dx, const vector<double>& v,
                                    vector<double>& dv);
 void getfivepointstencilderivative(const vector<double>& v, vector<double>& dv);
-void slope_straight_line_fit(const vector<double>& x, const vector<double>& y,
-                             vector<double>& slope);
+linear_fit_result slope_straight_line_fit(const vector<double>& x,
+                                          const vector<double>& y);
 
+template <class T>
+double vec_median(vector<T> v);
+template <class T>
+double vec_mean(const vector<T> &v);
+
+std::pair<size_t, size_t> get_time_index(std::vector<double> &t, double startTime,
+                                     double endTime, double precisionThreshold);
+      
 template <class ForwardIterator>
 ForwardIterator first_min_element(ForwardIterator first, ForwardIterator last) {
   ForwardIterator lowest = first;
@@ -55,4 +78,18 @@ ForwardIterator first_min_element(ForwardIterator first, ForwardIterator last) {
   return lowest;
 }
 
+#define EFEL_ASSERT(assertion, message) efel_assert(assertion, message, __FILE__,__LINE__)
+inline void
+efel_assert(bool assertion, const char *message, const char *file, const int line)
+{
+  if(!assertion){
+    printf("Assertion fired(%s:%d): %s\n", file, line, message);
+    exit(-1);
+  }
+}
+
+inline bool is_nan(double x)
+{
+  return x != x;
+}
 #endif

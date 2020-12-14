@@ -1,14 +1,62 @@
-[![Build Status](https://travis-ci.org/BlueBrain/eFEL.svg?branch=master)](https://travis-ci.org/BlueBrain/eFEL)
-[![codecov.io](http://codecov.io/github/BlueBrain/eFEL/coverage.svg?branch=master)](http://codecov.io/github/BlueBrain/eFEL?branch=master)
-[![Code Climate](https://codeclimate.com/github/BlueBrain/eFEL/badges/gpa.svg)](https://codeclimate.com/github/BlueBrain/eFEL)
-[![Join the chat at https://gitter.im/BlueBrain/eFEL](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/BlueBrain/eFEL?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+<img src="docs/source/logo/eFELBanner.png"/>
+
+<table>
+<tr>
+  <td>Latest Release</td>
+  <td>
+    <a href="https://pypi.org/project/efel/">
+    <img src="https://img.shields.io/pypi/v/efel.svg" alt="latest release" />
+    </a>
+  </td>
+</tr>
+<tr>
+  <td>Documentation</td>
+  <td>
+    <a href="https://efel.readthedocs.io/">
+    <img src="https://readthedocs.org/projects/efel/badge/?version=latest" alt="latest documentation" />
+    </a>
+  </td>
+</tr>
+<tr>
+  <td>License</td>
+  <td>
+    <a href="https://github.com/BlueBrain/efel/blob/master/LICENSE.txt">
+    <img src="https://img.shields.io/pypi/l/efel.svg" alt="license" />
+    </a>
+</td>
+</tr>
+<tr>
+  <td>Build Status</td>
+  <td>
+    <a href="https://travis-ci.com/BlueBrain/eFEL">
+    <img src="https://travis-ci.com/BlueBrain/eFEL.svg?branch=master" alt="travis build status" />
+    </a>
+  </td>
+</tr>
+<tr>
+  <td>Coverage</td>
+  <td>
+    <a href="https://codecov.io/gh/BlueBrain/efel">
+    <img src="https://codecov.io/github/BlueBrain/eFEL/coverage.svg?branch=master" alt="coverage" />
+    </a>
+  </td>
+</tr>
+<tr>
+    <td>Gitter</td>
+    <td>
+        <a href="https://gitter.im/bluebrain/efel">
+        <img src="https://badges.gitter.im/Join%20Chat.svg"
+    </a>
+    </td>
+</tr>
+</table>
 
 Introduction
 ============
 
 The Electrophys Feature Extraction Library (eFEL) allows neuroscientists
-to automatically extract features from time series data recorded from neurons 
-(both in vitro and in silico). 
+to automatically extract features from time series data recorded from neurons
+(both in vitro and in silico).
 Examples are the action potential width and amplitude in voltage traces recorded
 during whole-cell patch clamp experiments.
 The user of the library provides a set of traces and selects the features to
@@ -18,13 +66,19 @@ the values to the user.
 The core of the library is written in C++, and a Python wrapper is included.
 At the moment we provide a way to automatically compile and install the library
 as a Python module. Instructions on how to compile the eFEL as a standalone C++ 
-library can be found [here](http://bluebrain.github.io/eFEL/installation.html#installing-the-c-standalone-library).
+library can be found [here](http://efel.readthedocs.io/en/latest/installation.html#installing-the-c-standalone-library).
+
+News
+====
+
+* 2016/01/17: We dropped support for Python 2.6. We're following the numpy and coverage module who also dropped support recently.
+For the moment eFEL still works with Python 2.6, you will just have to install the right (older) versions of the dependencies.
+The eFEL code isn't automatically tested on 2.6 anymore.
 
 Requirements
 ============
 
-* [Python 2.6+](https://www.python.org/download/releases/2.7/) or 
-[Python 3.4+](https://www.python.org/download/releases/3.4.3/)
+* [Python 2.7+](https://www.python.org/download/releases/2.7/) or [Python 3.4+](https://www.python.org/download/releases/3.4.3/)
 * [Pip](https://pip.pypa.io) (installed by default in newer versions of Python)
 * C++ compiler that can be used by pip
 * [Numpy](http://www.numpy.org) (will be installed automatically by pip)
@@ -40,7 +94,7 @@ The easiest way to install eFEL is to use [pip](https://pip.pypa.io)
 pip install efel
 ```
 
-In case you don't have administrator access this command might fail with a 
+In case you don't have administrator access this command might fail with a
 permission error. In that case you could install eFEL in your home directory
 
 ```bash
@@ -78,9 +132,9 @@ To get a list with all the available feature names
 efel.getFeatureNames()
 ```
 
-The python function to extract features is getFeatureValues(...). 
-Below is a short example on how to use this function. The code and example 
-trace are available 
+The python function to extract features is getFeatureValues(...).
+Below is a short example on how to use this function. The code and example
+trace are available
 [here](https://github.com/BlueBrain/eFEL/blob/master/examples/basic/basic_example1.py)
 
 ```python
@@ -154,8 +208,8 @@ Results are in mV.
 
 Full documentation
 ==================
-The full documentation can be found [here](http://bluebrain.github.io/eFEL)
+The full documentation can be found [here](http://efel.readthedocs.io)
 
 Funding
 =======
-This work has been partially funded by the European Union Seventh Framework Program (FP7/2007­2013) under grant agreement no. 604102 (HBP)
+This work has been partially funded by the European Union Seventh Framework Program (FP7/2007­2013) under grant agreement no. 604102 (HBP), the European Union’s Horizon 2020 Framework Programme for Research and Innovation under the Specific Grant Agreement No. 720270, 785907 (Human Brain Project SGA1/SGA2) and by the EBRAINS research infrastructure, funded from the European Union’s Horizon 2020 Framework Programme for Research and Innovation under the Specific Grant Agreement No. 945539 (Human Brain Project SGA3).

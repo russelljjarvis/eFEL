@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 
 """Update the featurenames json file that contains the expected names"""
 
@@ -40,8 +40,8 @@ if __name__ == '__main__':
     efel.cppcore.Initialize(efel.getDependencyFileLocation(), "log")
 
     with open('featurenames.json', 'w') as featurenames_json:
-        feature_names = []
-        efel.cppcore.getFeatureNames(feature_names)
+        feature_names = efel.getFeatureNames()
+        feature_names = sorted(set(feature_names))
         json.dump(
             feature_names,
             featurenames_json,

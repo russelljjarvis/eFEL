@@ -23,6 +23,7 @@
 #include "Utils.h"
 
 #include <vector>
+#include <stdexcept>
 
 using std::vector;
 
@@ -103,6 +104,8 @@ int AP2_AP1_peak_diff(mapStr2intVec& IntFeatureData,
 int AP1_width(mapStr2intVec& IntFeatureData,
               mapStr2doubleVec& DoubleFeatureData, mapStr2Str& StringData);
 int AP2_width(mapStr2intVec& IntFeatureData,
+              mapStr2doubleVec& DoubleFeatureData, mapStr2Str& StringData);
+int APlast_width(mapStr2intVec& IntFeatureData,
               mapStr2doubleVec& DoubleFeatureData, mapStr2Str& StringData);
 
 int AHP_depth_from_peak(mapStr2intVec& IntFeatureData,
@@ -193,10 +196,19 @@ int min_voltage_between_spikes(mapStr2intVec& intfeaturedata,
 int voltage(mapStr2intVec& intfeaturedata,
                                   mapStr2doubleVec& doublefeaturedata,
                                   mapStr2Str& StringData);
+int current(mapStr2intVec& intfeaturedata,
+                                  mapStr2doubleVec& doublefeaturedata,
+                                  mapStr2Str& StringData);
+int time(mapStr2intVec& intfeaturedata,
+                                  mapStr2doubleVec& doublefeaturedata,
+                                  mapStr2Str& StringData);
 int steady_state_voltage_stimend(mapStr2intVec& IntFeatureData,           
                                  mapStr2doubleVec& DoubleFeatureData,             
                                  mapStr2Str& StringData);
 int voltage_base(mapStr2intVec& IntFeatureData,           
+                 mapStr2doubleVec& DoubleFeatureData,             
+                 mapStr2Str& StringData);
+int current_base(mapStr2intVec& IntFeatureData,           
                  mapStr2doubleVec& DoubleFeatureData,             
                  mapStr2Str& StringData);
 int decay_time_constant_after_stim(mapStr2intVec& IntFeatureData,
@@ -212,6 +224,18 @@ int maximum_voltage_from_voltagebase(mapStr2intVec& IntFeatureData,
                                    mapStr2doubleVec& DoubleFeatureData,
                                    mapStr2Str& StringData);
 int Spikecount_stimint(mapStr2intVec& IntFeatureData,                                    
+                       mapStr2doubleVec& DoubleFeatureData, 
+                       mapStr2Str& StringData); 
+int peak_indices(mapStr2intVec& IntFeatureData,                                    
+                       mapStr2doubleVec& DoubleFeatureData, 
+                       mapStr2Str& StringData); 
+int sag_amplitude(mapStr2intVec& IntFeatureData,                                    
+                       mapStr2doubleVec& DoubleFeatureData, 
+                       mapStr2Str& StringData); 
+int sag_ratio1(mapStr2intVec& IntFeatureData,                                    
+                       mapStr2doubleVec& DoubleFeatureData, 
+                       mapStr2Str& StringData); 
+int sag_ratio2(mapStr2intVec& IntFeatureData,                                    
                        mapStr2doubleVec& DoubleFeatureData, 
                        mapStr2Str& StringData); 
 }

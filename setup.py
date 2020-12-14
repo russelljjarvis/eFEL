@@ -75,7 +75,8 @@ setup(
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     install_requires=['numpy>=1.6', 'six'],
-    packages=['efel'],
+    extras_require={'neo': ['neo[neomatlabio]>=0.5.1']},
+    packages=['efel', 'efel.pyfeatures'],
     author="BlueBrain Project, EPFL",
     maintainer="Werner Van Geit",
     maintainer_email="werner.vangeit@epfl.ch",
@@ -100,14 +101,15 @@ setup(
         'Environment :: Console',
         'License :: OSI Approved :: GNU Lesser General Public '
         'License v3 (LGPLv3)',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
         'Operating System :: POSIX',
         'Topic :: Scientific/Engineering',
         'Topic :: Utilities'],
     package_data={
-        '': [
-            'DependencyV5.txt',
-            'VERSION.txt',
-            'README.md',
-            'GITHASH.txt'] + cppcore_headers},
+        '': ['DependencyV5.txt',
+             'VERSION.txt',
+             'README.md',
+             'GITHASH.txt'] + cppcore_headers},
     ext_modules=[cppcore])

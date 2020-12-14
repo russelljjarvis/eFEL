@@ -196,6 +196,7 @@ void cFeature::fillfeaturetypes() {
   featuretypes["AP2_AP1_peak_diff"] = "double";
   featuretypes["AP1_width"] = "double";
   featuretypes["AP2_width"] = "double";
+  featuretypes["APlast_width"] = "double";
 
   featuretypes["AHP_depth_from_peak"] = "double";
   featuretypes["AHP_time_from_peak"] = "double";
@@ -233,10 +234,16 @@ void cFeature::fillfeaturetypes() {
   featuretypes["AP_amplitude_from_voltagebase"] = "double";
   featuretypes["min_voltage_between_spikes"] = "double";
   featuretypes["voltage"] = "double";
+  featuretypes["current"] = "double";
+  featuretypes["time"] = "double";
   featuretypes["steady_state_voltage_stimend"] = "double";
   featuretypes["voltage_base"] = "double";
+  featuretypes["current_base"] = "double";
   featuretypes["decay_time_constant_after_stim"] = "double";
   featuretypes["maximum_voltage_from_voltagebase"] = "double";
+  featuretypes["sag_amplitude"] = "double";
+  featuretypes["sag_ratio1"] = "double";
+  featuretypes["sag_ratio2"] = "double";
 
   // end of feature types
 }
@@ -532,7 +539,7 @@ int cFeature::printFeature(const char* strFileName) {
 }
 
 double cFeature::getDistance(string strName, double mean, double std, 
-        bool trace_check) {
+        bool trace_check, double error_dist) {
 
   vector<double> feature_vec;
   vector<int> feature_veci;
@@ -545,7 +552,7 @@ double cFeature::getDistance(string strName, double mean, double std,
   if (trace_check) {
       retVal = getFeatureInt("trace_check", feature_veci);
       if (retVal < 0) {
-          return 250.0;
+          return error_dist;
       }
   }
 
@@ -566,7 +573,7 @@ double cFeature::getDistance(string strName, double mean, double std,
   // printf("\n Calculating distance for [%s] values [", strName.c_str());
   if (retVal <= 0) {
     // printf ("\n Error in feature calculation... [%s]\n",GErrorStr.c_str() );
-    return 250;
+    return error_dist;
   } else {
     if (intFlag) {
       for (unsigned i = 0; i < feature_veci.size(); i++) {
@@ -576,8 +583,8 @@ double cFeature::getDistance(string strName, double mean, double std,
       dError = dError / std / feature_veci.size();
       if (dError != dError) {
         // printf("Warning: Error distance calculation generated NaN, returning
-        // 250\n");
-        return 250;
+        // error_dist\n");
+        return error_dist;
       }
       // printf("] TotalError = %f\n", dError);
       return dError;
@@ -590,14 +597,14 @@ double cFeature::getDistance(string strName, double mean, double std,
       if (dError != dError) {
         printf(
             "Warning: Error distance calculation generated NaN, returning "
-            "250\n");
-        return 250;
+            "error_dist\n");
+        return error_dist;
       }
       // printf("] TotalError = %f\n", dError);
       return dError;
     }
   }
-  return 250.0;
+  return error_dist;
 }
 
 string cFeature::featuretype(string featurename) {

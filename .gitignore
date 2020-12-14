@@ -5,3 +5,7 @@
 /build.sh.lviz
 *.pyc
 /build.sh
+/pyenv
+/.python-version
+/.tox
+/.coverage

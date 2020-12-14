@@ -153,6 +153,23 @@ The slope of a linear fit to a loglog plot of the ISI values
 
     ISI_log_slope = slope
 
+**LibV5 : check_AISInitiation**
+
+Check initiation of AP in AIS
+
+- **Required features**: t, V, stim_start, stim_end, AP_begin_time, AP_begin_time;location_AIS
+- **Units**: ms
+- **Pseudocode**: ::
+
+    if len(AP_begin_time) != len(AP_begin_time;location_AIS):
+        return None
+    for soma_time, ais_time in zip(AP_begin_time, AP_begin_time;location_AIS):
+        if soma_time < ais_time:
+            return None
+    return [1]        
+
+
+
 Spike shape features
 --------------------
 
@@ -255,7 +272,8 @@ Voltage features
 .. image:: _static/figures/voltage_features.png
 
 
-**LibV5 : steady_state_voltage_stimend**
+LibV5 : steady_state_voltage_stimend
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The average voltage during the last 10% of the stimulus duration.
 
@@ -269,7 +287,8 @@ The average voltage during the last 10% of the stimulus duration.
     steady_state_voltage_stimend = numpy.mean(voltage[numpy.where((t < end_time) & (t >= begin_time))])
 
 
-**LibV1 : steady_state_voltage**
+LibV1 : steady_state_voltage
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The average voltage after the stimulus
 
@@ -280,7 +299,8 @@ The average voltage after the stimulus
     steady_state_voltage = numpy.mean(voltage[numpy.where((t <= max(t)) & (t > stim_end))])
 
 
-**LibV5 : voltage_base**
+LibV5 : voltage_base
+~~~~~~~~~~~~~~~~~~~~
 
 The average voltage during the last 10% of time before the stimulus.
 
@@ -294,7 +314,8 @@ The average voltage during the last 10% of time before the stimulus.
         (t >= voltage_base_start_perc * stim_start) &
         (t <= voltage_base_end_perc * stim_start))])
 
-**LibV5 : decay_time_constant_after_stim**
+LibV5 : decay_time_constant_after_stim
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The decay time constant of the voltage right after the stimulus
 
@@ -314,6 +335,89 @@ The decay time constant of the voltage right after the stimulus
     slope, _ = numpy.polyfit(time_interval, log_voltage_interval, 1)
 
     decay_time_constant_after_stim = -1. / slope
+
+.. image:: _static/figures/sag.png
+
+LibV5 : sag_amplitude
+~~~~~~~~~~~~~~~~~~~~~
+
+The difference between the minimal voltage and the steady state at stimend
+
+- **Required features**: t, V, stim_start, stim_end, steady_state_voltage_stimend, minimum_voltage, voltage_deflection_stim_ssse
+- **Parameters**: 
+- **Units**: mV
+- **Pseudocode**: ::
+
+    if (voltage_deflection_stim_ssse <= 0):
+        sag_amplitude = steady_state_voltage_stimend - minimum_voltage
+    else:
+        sag_amplitude = None
+
+
+LibV5 : sag_ratio1
+~~~~~~~~~~~~~~~~~~
+
+The ratio between the sag amplitude and the maximal sag extend from voltage base
+
+- **Required features**: t, V, stim_start, stim_end, sag_amplitude, voltage_base, minimum_voltage
+- **Parameters**: 
+- **Units**: constant
+- **Pseudocode**: ::
+
+    if voltage_base != minimum_voltage:
+        sag_ratio1 = sag_amplitude / (voltage_base - minimum_voltage)
+    else:
+        sag_ratio1 = None
+
+LibV5 : sag_ratio2
+~~~~~~~~~~~~~~~~~~
+
+The ratio between the maximal extends of sag from steady state and voltage base
+
+- **Required features**: t, V, stim_start, stim_end, steady_state_voltage_stimend, voltage_base, minimum_voltage
+- **Parameters**: 
+- **Units**: constant
+- **Pseudocode**: ::
+
+    if voltage_base != minimum_voltage:
+        sag_ratio2 = (voltage_base - steady_state_voltage_stimend) / (voltage_base - minimum_voltage)
+    else:
+        sag_ratio2 = None
+
+LibV1 : ohmic_input_resistance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ratio between the voltage deflection and stimulus current
+
+- **Required features**: t, V, stim_start, stim_end, voltage_deflection
+- **Parameters**: stimulus_current
+- **Units**: mV/nA
+- **Pseudocode**: ::
+
+    ohmic_input_resistance = voltage_deflection / stimulus_current
+
+LibV5 : ohmic_input_resistance_vb_ssse
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ratio between the voltage deflection (between voltage base and steady-state voltage at stimend) and stimulus current
+
+- **Required features**: t, V, stim_start, stim_end, voltage_deflection_vb_ssse
+- **Parameters**: stimulus_current
+- **Units**: mV/nA
+- **Pseudocode**: ::
+
+    ohmic_input_resistance_vb_ssse = voltage_deflection_vb_ssse / stimulus_current
+
+LibV5 : voltage_deflection_vb_ssse
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The voltage deflection between voltage base and steady-state voltage at stimend
+
+- **Required features**: t, V, stim_start, stim_end, voltage_base, steady_state_voltage_stimend
+- **Units**: mV
+- **Pseudocode**: ::
+
+    voltage_deflection_vb_ssse = steady_state_voltage_stimend - voltage_base
 
 
 Requested eFeatures
