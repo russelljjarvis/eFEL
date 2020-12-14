@@ -24,8 +24,10 @@ Copyright (c) 2015, EPFL/Blue Brain Project
  along with this library; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
-
 from __future__ import division
+
+import faulthandler; faulthandler.enable()
+
 
 # pylint: disable=W0602,W0603,W0702, F0401, W0612, R0912
 
@@ -485,8 +487,10 @@ def _get_feature_values_serial(trace_featurenames):
 def get_cpp_feature(featureName, raise_warnings=None):
     """Return value of feature implemented in cpp"""
     cppcoreFeatureValues = list()
-    exitCode = cppcore.getFeature(featureName, cppcoreFeatureValues)
-
+    try:
+       exitCode = cppcore.getFeature(featureName, cppcoreFeatureValues)
+    except:
+        exitCode = -1
     if exitCode < 0:
         if raise_warnings:
             import warnings
@@ -533,12 +537,17 @@ def getMeanFeatureValues(traces, featureNames, raise_warnings=True):
         traces,
         featureNames,
         raise_warnings=raise_warnings)
+
     for featureDict in featureDicts:
         for (key, values) in list(featureDict.items()):
             if values is None or len(values) == 0:
                 featureDict[key] = None
             else:
-                featureDict[key] = numpy.mean(values)
+                try:
+                    featureDict[key] = numpy.mean(values)
+                except:
+                    print('gets here')
+                    featureDict[key] = None
 
     return featureDicts
 

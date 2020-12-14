@@ -28,6 +28,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import numpy
 import efel.cppcore
+from elephant.spike_train_generation import threshold_detection
+import quantities as qt
+from neo import AnalogSignal
 
 
 all_pyfeatures = [
@@ -40,6 +43,29 @@ all_pyfeatures = [
     'initburst_sahp_ssse',
     'depol_block']
 
+new_py_features = [
+    'spike_times'
+]
+
+allen_py_features = [
+    'allen_features'
+]
+all_pyfeatures.extend(new_py_features)
+def spike_times():
+    voltage = _get_cpp_feature("voltage")
+    time = _get_cpp_feature("time")
+    vM = AnalogSignal(voltage,units=qt.mV,sampling_period=(time[1]-time[0])*qt.ms)
+    thresh_cross = threshold_detection(vM,0*qt.mV)
+    return list(thresh_cross)
+
+def per_each_spike_time(index):
+    this_spk_time = spike_times[index]
+    #list_of_methods=[]
+    #for spk_times,i in enumerate(spk_times):
+    #    exec('def spk_method_'+str(i)+str(':'))
+    #    exec('   return spk_times['+str(i)+str(']'))
+    #    list_of_methods.append('spk_method_'+str(i))
+    return this_spk_time
 
 def voltage():
     """Get voltage trace"""
