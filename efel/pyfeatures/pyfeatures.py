@@ -29,8 +29,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import numpy
 import efel.cppcore
 from elephant.spike_train_generation import threshold_detection
-import ipfx#.ephys.ephys_extractor import EphysSweepFeatureExtractor
-from ipfx import spike_features, spike_train_features
 
 import quantities as qt
 from neo import AnalogSignal
@@ -89,6 +87,9 @@ def neuronunit_features_as_EFEL(model,observations,tests):
 
 def allen_features_as_EFEL():
     '''
+    import ipfx#.ephys.ephys_extractor import EphysSweepFeatureExtractor
+    from ipfx import spike_features, spike_train_features
+
     from ipfx.feature_extractor import (
     SpikeFeatureExtractor, SpikeTrainFeatureExtractor
     )
