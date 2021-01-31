@@ -37,61 +37,12 @@ all_pyfeatures = [
     'initburst_sahp_vb',
     'initburst_sahp_ssse',
     'depol_block']
-'''
-
-
-#from elephant.spike_train_generation import threshold_detection
-#import quantities as qt
-#from neo import AnalogSignal
-#import neuronunit.capabilities.spike_functions as sf
 
 new_py_features = [
     'spike_times',
     'per_each_spike_time'
     ]
 
-
-
-allen_py_features = [
-    'tau',
-    'v_baseline',
-    'input_resistance',
-    'vm_for_sag',
-    'fi_fit_slope',
-    'sag',
-    'rheobase_i'
-]
-all_pyfeatures.extend(new_py_features)
-all_pyfeatures.extend(allen_py_features)
-
-def neuronunit_FI(model,observation):
-    from neuronunit.tests import FITest
-    fit = FITest(observation)
-    score = fit.judge(model)
-    score.norm_score
-    return score
-
-def neuronunit_features_as_EFEL(model,observations,tests):
-    tt = []
-    scores = []
-    for t,o in zip(tests,observations):
-        tt.append(t(o))
-        score = tt.judge(model)
-        scores.append(score)
-    return scores
-
-
-def allen_features_as_EFEL():
-    import ipfx#.ephys.ephys_extractor import EphysSweepFeatureExtractor
-    from ipfx import spike_features, spike_train_features
-
-    from ipfx.feature_extractor import (
-    SpikeFeatureExtractor, SpikeTrainFeatureExtractor
-    )
-    import ipfx.stimulus_protocol_analysis as spa
-    from ipfx.epochs import get_stim_epoch
-    from ipfx.dataset.create import create_ephys_data_set
-    from ipfx.utilities import drop_failed_sweeps
 def spike_times():
     voltage = _get_cpp_feature("voltage")
     time = _get_cpp_feature("time")
@@ -102,7 +53,6 @@ def spike_times():
 def per_each_spike_time(index):
     this_spk_time = spike_times[index]
     return this_spk_time
-'''
 def voltage():
     """Get voltage trace"""
     return _get_cpp_feature("voltage")
